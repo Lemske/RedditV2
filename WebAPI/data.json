@@ -1,0 +1,34 @@
+{
+  "Users": [
+    {
+      "Username": "trmo",
+      "Password": "onetwo3FOUR",
+      "Email": "trmo@via.dk",
+      "Domain": "via",
+      "Name": "Troels Mortensen",
+      "Role": "Teacher",
+      "Age": 36,
+      "SecurityLevel": 4
+    },
+    {
+      "Username": "jknr",
+      "Password": "password",
+      "Email": "jakob@gmail.com",
+      "Domain": "gmail",
+      "Name": "Jakob Rasmussen",
+      "Role": "Student",
+      "Age": 34,
+      "SecurityLevel": 2
+    },
+    {
+      "Username": "Simsor",
+      "Password": "qqww12345",
+      "Email": "qqq",
+      "Domain": "Reddit",
+      "Name": "qqq",
+      "Role": "Wizard",
+      "Age": 19,
+      "SecurityLevel": 1
+    }
+  ]
+}

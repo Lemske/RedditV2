@@ -1,0 +1,137 @@
+﻿@page "/Login"
+@using HttpClients.ServiceInterfaces
+@using System.Reflection
+@inject IAuthService authService
+@inject NavigationManager navMgr
+
+<AuthorizeView>
+    <NotAuthorized>
+        <div class="card">
+            <h3>Please login</h3>
+            <div class="field">
+                <label>Username</label>
+                <input class=@_validationUsername type="text" @oninput="CheckUsername" placeholder="Username"/>
+            </div>
+            <div class="field">
+                <label style="text-align: center">Password</label>
+                <input class=@_validationPassword type="password" @oninput="CheckPassword" placeholder="Password" />
+            </div>
+            @if (!string.IsNullOrEmpty(_errorLabel))
+            {
+                    <div class="field">
+                        <label style="color: red">
+                        @_errorLabel
+                        </label>
+                    </div>
+            }
+            <div class="field">
+                <button class="loginbtn" style="background-color: rgb(@_redRgb,@_greenRgb,000); @_glow" @onclick="LoginAsync">Log in</button>
+            </div>
+            <div>
+                <a class="signupText" @onclick="SignUp">Sign Up</a>
+            </div>
+        </div>
+    </NotAuthorized>
+    <Authorized>
+        <div class="card">
+            <h3>Hello, @context.User.Identity.Name</h3>
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    private string _username;
+    private string _password;
+    private string _errorLabel;
+    private string _validationUsername;
+    private string _validationPassword;
+    
+        private const int MinUsernameCharacters = 4; //Disse to domainer brude også være på serverside, ser om jeg når
+        private const int MinPasswordCharacters = 6;
+    
+    private int _minUserCharReach;
+    private int _minPassCharReach;
+        private const int RgbTotal = 255;
+    
+    private int _redRgb;
+    private int _greenRgb;
+    private string _glow;
+    
+        private const string Invalid = "invalid"; //Kan nok godt gøre det her smartere... men burde nok gå videre
+        private const string Valid = "valid";
+    private bool fillsMinimumReq;
+    
+    public Login() //Spørgsmål til underviser: Er det normalt at lave constructer i page?
+    {
+        _validationUsername = Invalid;
+        _validationPassword = Invalid;
+        _redRgb = RgbTotal;
+        _greenRgb = 0;
+        fillsMinimumReq = false;
+    }
+    private void CheckUsername(ChangeEventArgs e)
+    {
+        Check(e, MinUsernameCharacters, nameof(_minUserCharReach), nameof(_username), nameof(_validationUsername));
+    }
+    private void CheckPassword(ChangeEventArgs e) 
+    { 
+        Check(e, MinPasswordCharacters, nameof(_minPassCharReach), nameof(_password), nameof(_validationPassword));
+    }
+    private void Check(ChangeEventArgs e, int minLengthRequirement, string reachChecker, string fieldToSet, string tagValidator)
+    {
+        string typedByUser = e!.Value!.ToString()!;
+        System.Diagnostics.Debug.WriteLine(typedByUser);
+        int typedLength = typedByUser.Length;
+        if(typedLength >= minLengthRequirement)
+        {
+            GetType().GetField(fieldToSet, BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(this, typedByUser);
+            GetType().GetField(tagValidator, BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(this, Valid);
+        } else
+        {
+            GetType().GetField(tagValidator, BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(this, Invalid);
+        }
+        GetType().GetField(reachChecker, BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(this, Math.Clamp(typedLength, 0, minLengthRequirement));
+        LoginUnluck();
+    }
+    
+    private void LoginUnluck()
+    {
+        double totalMinNumberOfCharsNeeded = MinPasswordCharacters + MinUsernameCharacters;
+        double combinedReached = _minPassCharReach + _minUserCharReach;
+        double stillNotReached = totalMinNumberOfCharsNeeded - combinedReached;
+        _greenRgb = (int) (RgbTotal * (combinedReached / totalMinNumberOfCharsNeeded));
+        _redRgb = (int) (RgbTotal * (stillNotReached / totalMinNumberOfCharsNeeded));
+        if (_greenRgb == RgbTotal)
+        {
+            _glow = "box-shadow: 0 0 25px 4px 	#afffaf, 0 0 10px 5px 	#afff5f,0 0 25px 5px #afff00;"; //Dundet glow online, sidder og lejet med... ret sjov glow :)
+            fillsMinimumReq = true;
+        }else
+        {
+            _glow = "";
+            fillsMinimumReq = false;
+        }
+    }   
+    
+    private async Task LoginAsync()
+    {
+        Console.WriteLine("Why");
+        _errorLabel = "";
+        try
+        {
+            if (!fillsMinimumReq)
+                throw new Exception("Username and Password has to be right length");
+            await authService.LoginAsync(_username, _password);
+            navMgr.NavigateTo("/");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            _errorLabel = $"Error: {e.Message}";
+        }
+    }
+
+    private void SignUp()
+    {
+        navMgr.NavigateTo("/SignUp");
+    }
+}
