@@ -1,6 +1,7 @@
 ﻿@page "/Login"
 @using HttpClients.ServiceInterfaces
 @using System.Reflection
+@using global::Shared.DTOs
 @inject IAuthService authService
 @inject NavigationManager navMgr
 
@@ -120,7 +121,12 @@
         {
             if (!fillsMinimumReq)
                 throw new Exception("Username and Password has to be right length");
-            await authService.LoginAsync(_username, _password);
+            //await authService.LoginAsync(_username, _password);
+            await authService.LoginAsync(new UserLoginDTO()
+            {
+                Username = _username,
+                Password = _password
+            });
             navMgr.NavigateTo("/");
         }
         catch (Exception e)

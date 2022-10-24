@@ -1,10 +1,12 @@
-﻿using Application.LogicInterfaces;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Reflection;
+using Application.LogicInterfaces;
 using Domain.Models;
 using Shared.DTOs;
 
 namespace WebAPI.Services;
 
-public class AuthService : IAuthService
+public class AuthService : IAuthService //Ved ikke om jeg vil have denne klasse sender model objekter videre. Kan argumentere for og imod
 {
     private IAuthLogic _logic;
 
@@ -15,13 +17,23 @@ public class AuthService : IAuthService
 
     public Task<User> ValidateUser(UserLoginDTO userLoginDto)
     {
+        NullCheck(userLoginDto);
         return _logic.ValidateUserAsync(userLoginDto.Username, userLoginDto.Password);
     }
 
     public Task RegisterUser(UserRegisterDTO userRegisterDto)
     {
-        _logic.RegisterUser(userRegisterDto.Username, userRegisterDto.Password, userRegisterDto.Email,
+        NullCheck(userRegisterDto);
+        return _logic.RegisterUser(userRegisterDto.Username, userRegisterDto.Password, userRegisterDto.Email,
             userRegisterDto.Name, userRegisterDto.Age);
-        return Task.CompletedTask;
+    }
+
+    private void NullCheck(Object dto)
+    {
+        foreach (PropertyInfo prop in dto.GetType().GetProperties())
+        {
+            if(prop.GetValue(dto, null) == null)
+                throw new ValidationException(prop.Name + " cannot be null");
+        }
     }
 }

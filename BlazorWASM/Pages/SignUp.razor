@@ -1,6 +1,7 @@
 ﻿@page "/SignUp"
 @using HttpClients.ServiceInterfaces
 @using System.Reflection
+@using global::Shared.DTOs
 @inject IAuthService AuthService
 @inject NavigationManager NavMgr
 <AuthorizeView>
@@ -174,7 +175,15 @@
         {
             if (!fillsMinimumReq)
                 throw new Exception("All fields has to be done");
-            await AuthService.RegisterAsync(_username, _password, _email, _name, _age);
+            //await AuthService.RegisterAsync(_username, _password, _email, _name, _age);
+            await AuthService.RegisterAsync(new UserRegisterDTO()
+            {
+                Username = _username,
+                Password = _password,
+                Email = _email,
+                Name = _name,
+                Age = _age
+            });
             NavMgr.NavigateTo("/Login");
         }
         catch (Exception e)

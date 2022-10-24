@@ -53,7 +53,7 @@ public class AuthController : ControllerBase
         }
     }
 
-    private string GenerateJwt(User user)
+    private string GenerateJwt(User user) 
     {
         List<Claim> claims = GenerateClaims(user);
 
@@ -75,7 +75,7 @@ public class AuthController : ControllerBase
         return serializedToken;
     }
 
-    private List<Claim> GenerateClaims(User user)
+    private List<Claim> GenerateClaims(User user) 
     {
         var claims = new[]
         {

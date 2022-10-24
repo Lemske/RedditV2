@@ -29,6 +29,16 @@
       "Role": "Wizard",
       "Age": 19,
       "SecurityLevel": 1
+    },
+    {
+      "Username": "string",
+      "Password": "string",
+      "Email": "string",
+      "Domain": "Reddit",
+      "Name": "string",
+      "Role": "Wizard",
+      "Age": 18,
+      "SecurityLevel": 1
     }
   ]
 }

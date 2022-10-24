@@ -21,14 +21,15 @@ namespace HttpClients.Services;
             this.client = client;
         }
 
-        public async Task LoginAsync(string username, string password)
+        public async Task LoginAsync(UserLoginDTO userLoginDto)
         {
+            /*
             UserLoginDTO userLoginDto = new()
             {
                 Username = username,
                 Password = password
             };
-
+            */
             string userAsJson = JsonSerializer.Serialize(userLoginDto);
             StringContent content = new(userAsJson, Encoding.UTF8, "application/json");
 
@@ -71,16 +72,16 @@ namespace HttpClients.Services;
             return Task.CompletedTask;
         }
 
-        public async Task RegisterAsync(string username, string password, string email, string name, int age)
+        public async Task RegisterAsync(UserRegisterDTO userRegisterDto)
         {
-            UserRegisterDTO userRegisterDto = new()
+            /*UserRegisterDTO userRegisterDto = new()
             {
                 Username = username,
                 Password = password,
                 Email = email,
                 Name = name,
                 Age = age
-            };
+            };*/
             string userAsJson = JsonSerializer.Serialize(userRegisterDto);
             StringContent content = new(userAsJson, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await client.PostAsync("https://localhost:7073/Auth/register", content);
@@ -97,8 +98,7 @@ namespace HttpClients.Services;
             ClaimsPrincipal principal = CreateClaimsPrincipal();
             return Task.FromResult(principal);
         }
-
-
+        
         // Below methods stolen from https://github.com/SteveSandersonMS/presentation-2019-06-NDCOslo/blob/master/demos/MissionControl/MissionControl.Client/Util/ServiceExtensions.cs
         private static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
         {
