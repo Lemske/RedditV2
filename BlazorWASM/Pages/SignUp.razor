@@ -119,17 +119,24 @@
     }
     
     private void CheckAge(ChangeEventArgs e) //Burde lave general eller tage d.o.b.
-    { 
-        var age = int.Parse(e.Value.ToString()); //Kan godt være null, burde handles
-        if (age >= MinAgeValue)
+    {
+        string? soonInt = e.Value?.ToString();
+        if (!string.IsNullOrEmpty(soonInt))
         {
-            _age = age;
-            _validationAge = Valid;
+            int age = int.Parse(e.Value!.ToString()!);
+            if (age >= MinAgeValue)
+            {
+                _age = age;
+                _validationAge = Valid;
+            }
+            else{
+                _validationAge = Invalid;
+            }
+            _minAgeValueReach = Math.Clamp(age, 0, MinAgeValue);
+        }else
+        {
+            _minAgeValueReach = 0;
         }
-        else{
-            _validationAge = Invalid;
-        }
-        _minAgeValueReach = Math.Clamp(age, 0, MinAgeValue);
         LoginUnluck();
     }
     

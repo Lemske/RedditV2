@@ -2,6 +2,7 @@
 using Application.LogicInterfaces;
 using Domain.Models;
 using FileData.DAOInterfaces;
+using Shared.DTOs;
 
 namespace Application.Logic;
 
@@ -19,40 +20,40 @@ public class AuthLogic : IAuthLogic
         _authDao = authDao;
     }
 
-    public async Task<User> ValidateUserAsync(string username, string password)
+    public async Task<User> ValidateUserAsync(UserLoginDTO userLoginDto)
     {
-        User? existingUser = _authDao.GetByUsernameAsync(username).Result;
+        User? existingUser = _authDao.GetByUsernameAsync(userLoginDto.Username).Result;
         if (existingUser == null)
         {
             throw new Exception("User not found");
         }
-        if (!existingUser.Password.Equals(password))
+        if (!existingUser.Password.Equals(userLoginDto.Password))
         {
             throw new Exception("Password mismatch");
         }
         return existingUser;
     }
 
-    public async Task RegisterUser(string username, string password, string email, string name, int age) //Hvis tid, se om dette ikke kan gøres smartere
+    public async Task RegisterUser(UserRegisterDTO userRegisterDto) //Hvis tid, se om dette ikke kan gøres smartere
     {
-        if (username.Length < UserLengthCondition)
+        if (userRegisterDto.Username.Length < UserLengthCondition)
             throw new ValidationException($"Username can't < {UserLengthCondition}");
-        if (_authDao.GetByUsernameAsync(username).Result != null)
+        if (_authDao.GetByUsernameAsync(userRegisterDto.Username).Result != null)
             throw new ValidationException("Username already in use");
-        if (password.Length < PasswordLengthCondition)
+        if (userRegisterDto.Password.Length < PasswordLengthCondition)
             throw new ValidationException($"Password can't be null or < {PasswordLengthCondition}");
-        if (email.Length < EmailLengthCondition)
+        if (userRegisterDto.Email.Length < EmailLengthCondition)
             throw new ValidationException($"Email can't be null or < {EmailLengthCondition}");
-        if (age < AgeSizeCondition)
+        if (userRegisterDto.Age < AgeSizeCondition)
             throw new ValidationException($"Age can't be under {AgeSizeCondition}");
         
         await _authDao.CreateUserAsync(new User()
         {
-            Username = username,
-            Password = password,
-            Email = email,
-            Name = name,
-            Age = age,
+            Username = userRegisterDto.Username,
+            Password = userRegisterDto.Password,
+            Email = userRegisterDto.Email,
+            Name = userRegisterDto.Name,
+            Age = userRegisterDto.Age,
             Domain = "Reddit",
             Role = "Wizard",
             SecurityLevel = 1

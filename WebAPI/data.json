@@ -1,6 +1,7 @@
 {
   "Users": [
     {
+      "Id": 0,
       "Username": "trmo",
       "Password": "onetwo3FOUR",
       "Email": "trmo@via.dk",
@@ -11,6 +12,7 @@
       "SecurityLevel": 4
     },
     {
+      "Id": 0,
       "Username": "jknr",
       "Password": "password",
       "Email": "jakob@gmail.com",
@@ -19,26 +21,25 @@
       "Role": "Student",
       "Age": 34,
       "SecurityLevel": 2
-    },
+    }
+  ],
+  "Posts": [
     {
-      "Username": "Simsor",
-      "Password": "qqww12345",
-      "Email": "qqq",
-      "Domain": "Reddit",
-      "Name": "qqq",
-      "Role": "Wizard",
-      "Age": 19,
-      "SecurityLevel": 1
-    },
-    {
-      "Username": "string",
-      "Password": "string",
-      "Email": "string",
-      "Domain": "Reddit",
-      "Name": "string",
-      "Role": "Wizard",
-      "Age": 18,
-      "SecurityLevel": 1
+      "Id": 1,
+      "Owner": {
+        "Id": 0,
+        "Username": "trmo",
+        "Password": "onetwo3FOUR",
+        "Email": "trmo@via.dk",
+        "Domain": "via",
+        "Name": "Troels Mortensen",
+        "Role": "Teacher",
+        "Age": 36,
+        "SecurityLevel": 4
+      },
+      "Title": "BIG MOTHERFUCKER",
+      "Topic": "YO GUYS, I\u0027VE JUST SEEN THE BIGGEST MOTHERFUCKER EVER. WHATS THE BIGGEST YOU\u0027VE SEEN?",
+      "Comments": null
     }
   ]
 }

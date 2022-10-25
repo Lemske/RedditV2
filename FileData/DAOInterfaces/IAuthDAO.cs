@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Shared.DTOs;
 
 namespace FileData.DAOInterfaces;
 

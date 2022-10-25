@@ -1,9 +1,10 @@
 ﻿using Domain.Models;
+using Shared.DTOs;
 
 namespace Application.LogicInterfaces;
 
 public interface IAuthLogic
 {
-    public Task<User> ValidateUserAsync(string username, string password);
-    public Task RegisterUser(string username, string password, string email, string name, int age);
+    public Task<User> ValidateUserAsync(UserLoginDTO userLoginDto);
+    public Task RegisterUser(UserRegisterDTO userRegisterDto);
 }

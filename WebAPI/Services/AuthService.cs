@@ -18,14 +18,13 @@ public class AuthService : IAuthService //Ved ikke om jeg vil have denne klasse 
     public Task<User> ValidateUser(UserLoginDTO userLoginDto)
     {
         NullCheck(userLoginDto);
-        return _logic.ValidateUserAsync(userLoginDto.Username, userLoginDto.Password);
+        return _logic.ValidateUserAsync(userLoginDto);
     }
 
     public Task RegisterUser(UserRegisterDTO userRegisterDto)
     {
         NullCheck(userRegisterDto);
-        return _logic.RegisterUser(userRegisterDto.Username, userRegisterDto.Password, userRegisterDto.Email,
-            userRegisterDto.Name, userRegisterDto.Age);
+        return _logic.RegisterUser(userRegisterDto);
     }
 
     private void NullCheck(Object dto)

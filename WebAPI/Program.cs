@@ -20,9 +20,15 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<FileContext>();
+
 builder.Services.AddScoped<IAuthDAO, UserFileDAO>();
 builder.Services.AddScoped<IAuthLogic, AuthLogic>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+
+builder.Services.AddScoped<IPostDAO, PostDAO>();
+builder.Services.AddScoped<IPostLogic, PostLogic>();
+builder.Services.AddScoped<IPostService, PostService>();
+
 
 // added auth handling
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>

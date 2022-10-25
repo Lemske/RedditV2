@@ -17,6 +17,15 @@ public class FileContext
         }
     }
     
+    public ICollection<Post> Posts
+    {
+        get
+        {
+            LoadData();
+            return _dataContainer!.Posts;
+        }
+    }
+    
     private void LoadData()
     {
         if (_dataContainer != null) return;
@@ -49,7 +58,8 @@ public class FileContext
                         Username = "jknr",
                         SecurityLevel = 2
                     }
-                }
+                },
+                Posts = new List<Post>()
             };
             return;
         }
