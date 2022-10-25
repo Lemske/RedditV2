@@ -1,0 +1,68 @@
+﻿@page "/Post/Create"
+@using HttpClients.ServiceInterfaces
+@using global::Shared.DTOs
+@inject IPostService PostService
+@inject NavigationManager NavMgr
+@inject AuthenticationStateProvider AuthenticationStateProvider
+<AuthorizeView>
+    <Authorized>
+        <div class="card">
+            <h3>@context.User.Identity.Name, Enter Information</h3>
+            <div class="field">
+                <label>Title</label>
+                <input  type="text" @bind="_title" placeholder="Username"/>
+            </div>
+            <div class="field">
+                <label>Topic</label>
+                <textarea type="text" @bind="_topic" placeholder="Username"></textarea>
+            </div>
+            @if (!string.IsNullOrEmpty(_errorLabel))
+            {
+                <div class="field">
+                    <label style="color: red">
+                        @_errorLabel
+                    </label>
+                </div>
+            }
+            <div class="field">
+                <button class="CreatePost" @onclick="CreatePostAsync">Create</button>
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="card">
+            <h3>You have to login!</h3>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private string _title;
+    private string _topic;
+    private string _errorLabel;
+    
+    
+    private async Task CreatePostAsync()
+    {
+        _errorLabel = "";
+        try
+        {
+            if (string.IsNullOrEmpty(_title) || string.IsNullOrEmpty(_topic))
+                throw new Exception("All fields has to be done");
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var username = authState.User.Identity!.Name;
+            await PostService.CreateAsync(new PostCreationDTO(username ?? throw new InvalidOperationException(), _title, _topic));
+            NavMgr.NavigateTo("/");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            _errorLabel = $"Error: {e.Message}";
+        }
+    }
+    private void Login()
+    {
+        NavMgr.NavigateTo("/Login");
+    }
+}
+}

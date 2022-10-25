@@ -15,7 +15,7 @@ public class PostController : ControllerBase
         _postService = postService;
     }
     
-    [HttpPost]
+    [HttpPost, Route("create")]
     public async Task<ActionResult<PostDTO>> CreateAsync([FromBody]PostCreationDTO dto)
     {
         try

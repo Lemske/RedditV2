@@ -4,7 +4,6 @@ public class PostDTO
 {
     public string Owner { get; }
     public string Title { get; }
-    
     public string Topic { get; set;}
     
     public ICollection<CommentDTO> Comments { get; set;}

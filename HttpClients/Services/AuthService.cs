@@ -8,8 +8,7 @@ namespace HttpClients.Services;
 
  public class AuthService : IAuthService
     {
-        //Should be injected - See Blazor tutorial
-        private readonly HttpClient client;
+        private readonly HttpClient _client;
 
         // this private variable for simple caching
         public static string? Jwt { get; private set; } = "";
@@ -18,22 +17,15 @@ namespace HttpClients.Services;
 
         public AuthService(HttpClient client)
         {
-            this.client = client;
+            _client = client;
         }
 
         public async Task LoginAsync(UserLoginDTO userLoginDto)
         {
-            /*
-            UserLoginDTO userLoginDto = new()
-            {
-                Username = username,
-                Password = password
-            };
-            */
             string userAsJson = JsonSerializer.Serialize(userLoginDto);
             StringContent content = new(userAsJson, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = await client.PostAsync("https://localhost:7073/auth/login", content);
+            HttpResponseMessage response = await _client.PostAsync("https://localhost:7073/auth/login", content);
             string responseContent = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
@@ -74,17 +66,9 @@ namespace HttpClients.Services;
 
         public async Task RegisterAsync(UserRegisterDTO userRegisterDto)
         {
-            /*UserRegisterDTO userRegisterDto = new()
-            {
-                Username = username,
-                Password = password,
-                Email = email,
-                Name = name,
-                Age = age
-            };*/
             string userAsJson = JsonSerializer.Serialize(userRegisterDto);
             StringContent content = new(userAsJson, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PostAsync("https://localhost:7073/Auth/register", content);
+            HttpResponseMessage response = await _client.PostAsync("https://localhost:7073/Auth/register", content);
             string responseContent = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
