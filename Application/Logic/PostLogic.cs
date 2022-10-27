@@ -19,7 +19,7 @@ public class PostLogic : IPostLogic
     public async Task<PostDTO> CreateAsync(PostCreationDTO dto)
     {
         User? user = await _authDao.GetByUsernameAsync(dto.OwnerUsername);
-        if (user == null) //gør tjeks bedre hvis jeg får tid
+        if (user == null)
         {
             throw new Exception($"User with Username {dto.OwnerUsername} was not found.");
         }
@@ -28,9 +28,18 @@ public class PostLogic : IPostLogic
         return new (created.Owner.Username, created.Title, created.Topic);
     }
 
-    public Task<IEnumerable<Post>> GetAsync(SeachPostParaneterDTO searchParameters)
+    public async Task<IEnumerable<PostOverviewDTO>> GetAsync(SearchPostOverviewParametersDTO searchOverviewParameters)
     {
-        throw new NotImplementedException();
+        var posts = await _postDao.GetAsync(searchOverviewParameters);
+        return posts.Select(post => new PostOverviewDTO(post.Id, post.Title)).ToList();
+    }
+
+    public async Task<PostDTO> GetAsync(int id)
+    {
+        Post? post = await _postDao.GetByIdAsync(id);
+        if (post == null)
+            throw new Exception($"Id {id} does not exist!");
+        return new PostDTO(post.Owner.Username, post.Title, post.Topic);
     }
 
     public Task DeleteAsync(int id)

@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using FileData.DAOInterfaces;
+using Shared.DTOs;
 
 namespace FileData.DAOs;
 
@@ -29,9 +30,10 @@ public class PostDAO : IPostDAO
         return Task.FromResult(post);
     }
 
-    public Task<IEnumerable<Post>> GetAsync()
+    public Task<IEnumerable<Post>> GetAsync(SearchPostOverviewParametersDTO searchOverviewParameters)
     {
-        throw new NotImplementedException();
+        IEnumerable<Post> result = _context.Posts.AsEnumerable();
+        return Task.FromResult(result);
     }
 
     public Task UpdateAsync(Post post)
@@ -39,9 +41,10 @@ public class PostDAO : IPostDAO
         throw new NotImplementedException();
     }
 
-    public Task<Post?> GetByIdAsync(int todoId)
+    public Task<Post?> GetByIdAsync(int postId)
     {
-        throw new NotImplementedException();
+        IEnumerable<Post> result = _context.Posts.AsEnumerable();
+        return Task.FromResult(result.First(p => p.Id == postId));
     }
 
     public Task DeleteAsync(int id)

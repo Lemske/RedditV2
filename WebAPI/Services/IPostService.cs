@@ -6,6 +6,7 @@ namespace WebAPI.Services;
 public interface IPostService
 {
     Task<PostDTO> CreateAsync(PostCreationDTO dto);
-    Task<IEnumerable<Post>> GetAsync(SeachPostParaneterDTO searchParameters);
+    Task<IEnumerable<PostOverviewDTO>> GetAsync(SearchPostOverviewParametersDTO searchOverviewParameters);
+    Task<PostDTO> GetAsync(int id);
     Task DeleteAsync(int id);
 }

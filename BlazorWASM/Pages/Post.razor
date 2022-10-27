@@ -1,0 +1,24 @@
+﻿@page "/Post/{id}"
+@using global::Shared.DTOs
+@using HttpClients.ServiceInterfaces
+@inject IPostService PostService
+<h3>Post</h3>
+@if (_postDto != null)
+{
+    <div class="card">
+        <p>@_postDto!.Owner</p>
+        <h3>@_postDto!.Title</h3>
+        <p>@_postDto!.Topic</p>
+    </div>
+}
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    private PostDTO? _postDto;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _postDto = await PostService.GetAsync(int.Parse(Id));
+    }
+}

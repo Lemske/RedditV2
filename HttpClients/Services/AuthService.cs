@@ -23,8 +23,8 @@ namespace HttpClients.Services;
         public async Task LoginAsync(UserLoginDTO userLoginDto)
         {
             string userAsJson = JsonSerializer.Serialize(userLoginDto);
+            
             StringContent content = new(userAsJson, Encoding.UTF8, "application/json");
-
             HttpResponseMessage response = await _client.PostAsync("https://localhost:7073/auth/login", content);
             string responseContent = await response.Content.ReadAsStringAsync();
 

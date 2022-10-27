@@ -6,7 +6,8 @@ namespace Application.LogicInterfaces;
 public interface IPostLogic
 {
     Task<PostDTO> CreateAsync(PostCreationDTO dto);
-    Task<IEnumerable<Post>> GetAsync(SeachPostParaneterDTO searchParameters);
+    Task<IEnumerable<PostOverviewDTO>> GetAsync(SearchPostOverviewParametersDTO searchOverviewParameters);
+    Task<PostDTO> GetAsync(int id);
     //Task UpdateAsync(TodoUpdateDto dto);
     Task DeleteAsync(int id);
     //Task<TodoBasicDto> GetByIdAsync(int id);

@@ -1,47 +1,54 @@
 ﻿@page "/Post/Create"
 @using HttpClients.ServiceInterfaces
 @using global::Shared.DTOs
+@using System.Security.Claims
 @inject IPostService PostService
 @inject NavigationManager NavMgr
-@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize]
+
 <AuthorizeView>
-    <Authorized>
-        <div class="card">
-            <h3>@context.User.Identity.Name, Enter Information</h3>
-            <div class="field">
-                <label>Title</label>
-                <input  type="text" @bind="_title" placeholder="Username"/>
-            </div>
-            <div class="field">
-                <label>Topic</label>
-                <textarea type="text" @bind="_topic" placeholder="Username"></textarea>
-            </div>
-            @if (!string.IsNullOrEmpty(_errorLabel))
-            {
-                <div class="field">
-                    <label style="color: red">
-                        @_errorLabel
-                    </label>
-                </div>
-            }
-            <div class="field">
-                <button class="CreatePost" @onclick="CreatePostAsync">Create</button>
-            </div>
+    <div class="card">
+        <h3>@context.User.Identity.Name, Enter Information</h3>
+        <div class="field">
+            <label>Title</label>
+            <input  type="text" @bind="_title" placeholder="Username"/>
         </div>
-    </Authorized>
-    <NotAuthorized>
-        <div class="card">
-            <h3>You have to login!</h3>
+        <div class="field">
+            <label>Topic</label>
+            <textarea type="text" @bind="_topic" placeholder="Username"></textarea>
         </div>
-    </NotAuthorized>
+        @if (!string.IsNullOrEmpty(_errorLabel))
+        {
+            <div class="field">
+                <label style="color: red">
+                    @_errorLabel
+                </label>
+            </div>
+        }
+        <div class="field">
+            <button class="CreatePost" @onclick="CreatePostAsync">Create</button>
+        </div>
+    </div>
 </AuthorizeView>
 
 @code {
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthState { get; set; } = null!;
+    
     private string _title;
     private string _topic;
     private string _errorLabel;
+    private string _username;
     
-    
+    protected override async Task OnInitializedAsync()
+    {
+        AuthenticationState authState = await AuthState;
+        ClaimsPrincipal user = authState.User;
+        
+        _username = user.Identity!.Name!;
+    }
+
+
     private async Task CreatePostAsync()
     {
         _errorLabel = "";
@@ -49,9 +56,9 @@
         {
             if (string.IsNullOrEmpty(_title) || string.IsNullOrEmpty(_topic))
                 throw new Exception("All fields has to be done");
-            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            var username = authState.User.Identity!.Name;
-            await PostService.CreateAsync(new PostCreationDTO(username ?? throw new InvalidOperationException(), _title, _topic));
+            PostCreationDTO postCreation = new PostCreationDTO(_username, _title, _topic);
+            
+            await PostService.CreateAsync(postCreation);
             NavMgr.NavigateTo("/");
         }
         catch (Exception e)
@@ -60,9 +67,4 @@
             _errorLabel = $"Error: {e.Message}";
         }
     }
-    private void Login()
-    {
-        NavMgr.NavigateTo("/Login");
-    }
-}
 }

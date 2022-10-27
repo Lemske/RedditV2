@@ -31,9 +31,14 @@ public class PostService : IPostService
         return _logic.CreateAsync(dto);
     }
 
-    public Task<IEnumerable<Post>> GetAsync(SeachPostParaneterDTO searchParameters)
+    public Task<IEnumerable<PostOverviewDTO>> GetAsync(SearchPostOverviewParametersDTO searchOverviewParameters)
     {
-        throw new NotImplementedException();
+        return _logic.GetAsync(searchOverviewParameters);
+    }
+
+    public Task<PostDTO> GetAsync(int id)
+    {
+        return _logic.GetAsync(id);
     }
 
     public Task DeleteAsync(int id)

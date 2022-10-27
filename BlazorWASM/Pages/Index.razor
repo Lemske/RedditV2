@@ -1,9 +1,44 @@
 ﻿@page "/"
+@using global::Shared.DTOs
+@using HttpClients.ServiceInterfaces
+@inject IPostService PostService
+@inject NavigationManager NavMgr
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Posts</PageTitle>
+<h1>All Posts</h1>
+@if (_postOverviewDTOs != null)
+{
+    <AuthorizeView>
+        <NotAuthorized>
+            @foreach (var postOverview in _postOverviewDTOs)
+            {
+                <div class="card">
+                    <h3>@postOverview.Title</h3>
+                </div>
+            }
+        </NotAuthorized>
+        <Authorized>
+            @foreach (var postOverview in _postOverviewDTOs)
+            {
+                <div class="card" @onclick="@(()=>GoToPost(postOverview.Id))">
+                    <h3>@postOverview.Title</h3>
+                </div>
+            }
+        </Authorized>
+    </AuthorizeView>
+}
 
-<h1>Hello, world!</h1>
+@code
+{
+    private IEnumerable<PostOverviewDTO> _postOverviewDTOs = null!;
 
-Welcome to your new app.
+    protected override async Task OnInitializedAsync()
+    {
+        _postOverviewDTOs = await PostService.GetAsync(new SearchPostOverviewParametersDTO(null, null));
+    }
 
-<SurveyPrompt Title="How is Blazor working for you?"/>
+    private void GoToPost(int postId)
+    {
+        NavMgr.NavigateTo($"/Post/{postId}");
+    }
+}

@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using HttpClients.ServiceInterfaces;
@@ -17,10 +18,12 @@ public class PostService : IPostService
     
     public async Task<PostDTO> CreateAsync(PostCreationDTO dto)
     {
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AuthService.Jwt);
+        
         string postAsJson = JsonSerializer.Serialize(dto);
         
         StringContent content = new(postAsJson, Encoding.UTF8, "application/json");
-        HttpResponseMessage response = await _client.PostAsJsonAsync("https://localhost:7073/Post/create", dto);
+        HttpResponseMessage response = await _client.PostAsJsonAsync("/Post/create", content);
         string responceContent = await response.Content.ReadAsStringAsync();
         
         if (!response.IsSuccessStatusCode)
@@ -35,8 +38,38 @@ public class PostService : IPostService
         return postDto;
     }
 
-    public Task<ICollection<PostDTO>> GetAsync(string? userName, int? userId, bool? completedStatus, string? titleContains)
+    public async Task<IEnumerable<PostOverviewDTO>> GetAsync(SearchPostOverviewParametersDTO searchPostOverviewParametersDto)//Bruger ikke parameter ligenu, kan være jeg vil lave søge senere
     {
-        throw new NotImplementedException();
+        HttpResponseMessage response = await _client.GetAsync("https://localhost:7073/Post");
+        string responseContent = await response.Content.ReadAsStringAsync();
+        
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception(responseContent);
+        }
+
+        IEnumerable<PostOverviewDTO>? postOverview = JsonSerializer.Deserialize<IEnumerable<PostOverviewDTO>>(responseContent, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
+        return postOverview!;
+    }
+
+    public async Task<PostDTO?> GetAsync(int postID)
+    {
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AuthService.Jwt);
+        HttpResponseMessage response = await _client.GetAsync($"https://localhost:7073/Post/{postID}");
+        string responseContent = await response.Content.ReadAsStringAsync();
+        
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception(responseContent);
+        }
+
+        var postDto = JsonSerializer.Deserialize<PostDTO>(responseContent, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
+        return postDto;
     }
 }
