@@ -5,6 +5,7 @@ using WebAPI.Services;
 
 namespace WebAPI.Controllers;
 [ApiController]
+[Authorize]
 [Route("[controller]")]
 
 public class PostController : ControllerBase 

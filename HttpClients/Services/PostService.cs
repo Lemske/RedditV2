@@ -55,10 +55,10 @@ public class PostService : IPostService
         return postOverview!;
     }
 
-    public async Task<PostDTO?> GetAsync(int postID)
+    public async Task<PostDTO?> GetAsync(int postId)
     {
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AuthService.Jwt);
-        HttpResponseMessage response = await _client.GetAsync($"https://localhost:7073/Post/{postID}");
+        HttpResponseMessage response = await _client.GetAsync($"https://localhost:7073/Post/{postId}");
         string responseContent = await response.Content.ReadAsStringAsync();
         
         if (!response.IsSuccessStatusCode)
