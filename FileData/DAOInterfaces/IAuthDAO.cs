@@ -1,8 +1,8 @@
 ﻿using Domain.Models;
-using Shared.DTOs;
 
 namespace FileData.DAOInterfaces;
 
+// ReSharper disable once InconsistentNaming
 public interface IAuthDAO
 {
     Task<User?> GetByUsernameAsync(string username);

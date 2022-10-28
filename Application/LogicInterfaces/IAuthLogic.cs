@@ -6,5 +6,5 @@ namespace Application.LogicInterfaces;
 public interface IAuthLogic
 {
     public Task<User> ValidateUserAsync(UserLoginDTO userLoginDto);
-    public Task RegisterUser(UserRegisterDTO userRegisterDto);
+    public Task RegisterUserAsync(UserRegisterDTO userRegisterDto);
 }

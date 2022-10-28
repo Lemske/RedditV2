@@ -6,8 +6,8 @@ using WebAPI.Services;
 namespace WebAPI.Controllers;
 [ApiController]
 [Route("[controller]")]
-[Authorize]
-public class PostController : ControllerBase
+
+public class PostController : ControllerBase 
 {
     private readonly IPostService _postService;
 
@@ -17,12 +17,12 @@ public class PostController : ControllerBase
     }
     
     [HttpPost, Route("create")]
-    public async Task<ActionResult<PostDTO>> CreateAsync([FromBody]PostCreationDTO dto)
+    public async Task<ActionResult<PostDTO>> CreatePostAsync([FromBody]PostCreationDTO dto)
     {
         try
         {
-            PostDTO created = await _postService.CreateAsync(dto);
-            return Created($"/Post/create/{created.Topic}", created);
+            PostDTO created = await _postService.CreatePostAsync(dto);
+            return Created($"/Post/create/{created.Topic}", created); //Er det her bedre end ok(obj)
         }
         catch (Exception e)
         {
@@ -33,11 +33,11 @@ public class PostController : ControllerBase
     
     [AllowAnonymous]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<PostOverviewDTO>>> GetAsync([FromQuery] int? postID, [FromQuery] string? topic)
+    public async Task<ActionResult<IEnumerable<PostOverviewDTO>>> GetPostOverviewAsync([FromQuery] int? postId, [FromQuery] string? topic)
     {
         try
         {
-            return Ok(await _postService.GetAsync(new SearchPostOverviewParametersDTO(postID, topic))); //Bruger ikke fromquery til meget ligenu
+            return Ok(await _postService.GetPostOverviewAsync(new SearchPostOverviewParametersDTO(postId, topic))); //Bruger ikke fromquery til meget ligenu
         }
         catch (Exception e)
         {
@@ -47,11 +47,11 @@ public class PostController : ControllerBase
     }
     
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<PostDTO>> GetAsync([FromRoute] int id)
+    public async Task<ActionResult<PostDTO>> GetPostByIdAsync([FromRoute] int id)
     {
         try
         {
-            return Ok(await _postService.GetAsync(id));
+            return Ok(await _postService.GetPostByIdAsync(id));
         }
         catch (Exception e)
         {
@@ -59,5 +59,4 @@ public class PostController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
-    
 }

@@ -1,38 +1,28 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Reflection;
-using Application.LogicInterfaces;
+﻿using Application.LogicInterfaces;
 using Domain.Models;
 using Shared.DTOs;
+using WebAPI.Services.ServiceParent;
 
 namespace WebAPI.Services;
 
-public class AuthService : IAuthService //Ved ikke om jeg vil have denne klasse sender model objekter videre. Kan argumentere for og imod
+public class AuthService : NullCheckService, IAuthService //Ved ikke om jeg vil have denne klasse sender model objekter videre. Kan argumentere for og imod
 {
-    private IAuthLogic _logic;
+    private readonly IAuthLogic _authLogic;
 
-    public AuthService(IAuthLogic logic)
+    public AuthService(IAuthLogic authLogic)
     {
-        _logic = logic;
+        _authLogic = authLogic;
     }
 
-    public Task<User> ValidateUser(UserLoginDTO userLoginDto)
+    public Task<User> ValidateUserAsync(UserLoginDTO userLoginDto)
     {
         NullCheck(userLoginDto);
-        return _logic.ValidateUserAsync(userLoginDto);
+        return _authLogic.ValidateUserAsync(userLoginDto);
     }
 
-    public Task RegisterUser(UserRegisterDTO userRegisterDto)
+    public Task RegisterUserAsync(UserRegisterDTO userRegisterDto)
     {
         NullCheck(userRegisterDto);
-        return _logic.RegisterUser(userRegisterDto);
-    }
-
-    private void NullCheck(Object dto)
-    {
-        foreach (PropertyInfo prop in dto.GetType().GetProperties())
-        {
-            if(prop.GetValue(dto, null) == null)
-                throw new ValidationException(prop.Name + " cannot be null");
-        }
+        return _authLogic.RegisterUserAsync(userRegisterDto);
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Shared.DTOs;
 using WebAPI.Services;
+// ReSharper disable SpecifyACultureInStringConversionExplicitly
 
 namespace WebAPI.Controllers;
 
@@ -24,11 +25,11 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost, Route("register")]
-    public async Task<ActionResult> Register([FromBody] UserRegisterDTO userRegisterDto)
+    public async Task<ActionResult> RegisterUserAsync([FromBody] UserRegisterDTO userRegisterDto)
     {
         try
         {
-            await _authService.RegisterUser(userRegisterDto);
+            await _authService.RegisterUserAsync(userRegisterDto);
             return Ok();
         }
         catch (Exception e)
@@ -38,11 +39,11 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost, Route("login")]
-    public async Task<ActionResult> Login([FromBody] UserLoginDTO userLoginDto)
+    public async Task<ActionResult> LoginUserAsync([FromBody] UserLoginDTO userLoginDto)
     {
         try
         {
-            User user = await _authService.ValidateUser(userLoginDto);
+            User user = await _authService.ValidateUserAsync(userLoginDto);
             string token = GenerateJwt(user);
 
             return Ok(token);
@@ -55,7 +56,7 @@ public class AuthController : ControllerBase
 
     private string GenerateJwt(User user) 
     {
-        List<Claim> claims = GenerateClaims(user);
+        IEnumerable<Claim> claims = GenerateClaims(user);
 
         SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
         SigningCredentials signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
@@ -75,7 +76,7 @@ public class AuthController : ControllerBase
         return serializedToken;
     }
 
-    private List<Claim> GenerateClaims(User user) 
+    private IEnumerable<Claim> GenerateClaims(User user) 
     {
         var claims = new[]
         {

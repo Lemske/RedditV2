@@ -20,21 +20,19 @@ public class AuthLogic : IAuthLogic
         _authDao = authDao;
     }
 
-    public async Task<User> ValidateUserAsync(UserLoginDTO userLoginDto)
+    public Task<User> ValidateUserAsync(UserLoginDTO userLoginDto)
     {
         User? existingUser = _authDao.GetByUsernameAsync(userLoginDto.Username).Result;
+        
         if (existingUser == null)
-        {
             throw new Exception("User not found");
-        }
         if (!existingUser.Password.Equals(userLoginDto.Password))
-        {
             throw new Exception("Password mismatch");
-        }
-        return existingUser;
+        
+        return Task.FromResult(existingUser);
     }
 
-    public async Task RegisterUser(UserRegisterDTO userRegisterDto) //Hvis tid, se om dette ikke kan gøres smartere
+    public async Task RegisterUserAsync(UserRegisterDTO userRegisterDto) //Hvis tid, se om dette ikke kan gøres smartere
     {
         if (userRegisterDto.Username.Length < UserLengthCondition)
             throw new ValidationException($"Username can't < {UserLengthCondition}");

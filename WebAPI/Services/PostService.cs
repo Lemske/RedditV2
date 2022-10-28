@@ -1,48 +1,36 @@
 ﻿using Application.LogicInterfaces;
-using Domain.Models;
 using Shared.DTOs;
+using WebAPI.Services.ServiceParent;
 
 namespace WebAPI.Services;
 
-public class PostService : IPostService
+public class PostService : NullCheckService, IPostService
 {
-    private IPostLogic _logic;
+    private readonly IPostLogic _postLogic;
 
-    public PostService(IPostLogic logic)
+    public PostService(IPostLogic postLogic)
     {
-        _logic = logic;
+        _postLogic = postLogic;
     }
 
-    public Task<PostDTO> CreateAsync(PostCreationDTO dto)
+    public Task<PostDTO> CreatePostAsync(PostCreationDTO dto)
     {
-        if (string.IsNullOrEmpty(dto.OwnerUsername))
-        {
-            throw new Exception("Username cannot be empty.");
-        }
-        if (string.IsNullOrEmpty(dto.Title))
-        {
-            throw new Exception("Title cannot be empty.");
-        }
-        if (string.IsNullOrEmpty(dto.Topic))
-        {
-            throw new Exception("Topic cannot be empty.");
-        }
-
-        return _logic.CreateAsync(dto);
+        NullCheck(dto);
+        return _postLogic.CreatePostAsync(dto);
     }
 
-    public Task<IEnumerable<PostOverviewDTO>> GetAsync(SearchPostOverviewParametersDTO searchOverviewParameters)
+    public Task<IEnumerable<PostOverviewDTO>> GetPostOverviewAsync(SearchPostOverviewParametersDTO searchOverviewParameters)
     {
-        return _logic.GetAsync(searchOverviewParameters);
+        return _postLogic.GetPostOverviewAsync(searchOverviewParameters);
     }
 
-    public Task<PostDTO> GetAsync(int id)
+    public Task<PostDTO> GetPostByIdAsync(int id)
     {
-        return _logic.GetAsync(id);
+        return _postLogic.GetPostAsync(id);
     }
 
-    public Task DeleteAsync(int id)
+    /*public Task DeleteAsync(int id)
     {
         throw new NotImplementedException();
-    }
+    }*/
 }

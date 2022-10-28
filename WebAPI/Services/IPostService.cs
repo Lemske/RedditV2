@@ -1,12 +1,11 @@
-﻿using Domain.Models;
-using Shared.DTOs;
+﻿using Shared.DTOs;
 
 namespace WebAPI.Services;
 
 public interface IPostService
 {
-    Task<PostDTO> CreateAsync(PostCreationDTO dto);
-    Task<IEnumerable<PostOverviewDTO>> GetAsync(SearchPostOverviewParametersDTO searchOverviewParameters);
-    Task<PostDTO> GetAsync(int id);
-    Task DeleteAsync(int id);
+    Task<PostDTO> CreatePostAsync(PostCreationDTO dto);
+    Task<IEnumerable<PostOverviewDTO>> GetPostOverviewAsync(SearchPostOverviewParametersDTO searchOverviewParameters);
+    Task<PostDTO> GetPostByIdAsync(int id);
+    //Task DeleteAsync(int id);
 }
