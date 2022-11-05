@@ -2,8 +2,8 @@
 @using HttpClients.ServiceInterfaces
 @using System.Reflection
 @using global::Shared.DTOs
-@inject IAuthService authService
-@inject NavigationManager navMgr
+@inject IAuthService AuthService
+@inject NavigationManager NavMgr
 
 <AuthorizeView>
     <NotAuthorized>
@@ -15,15 +15,15 @@
             </div>
             <div class="field">
                 <label style="text-align: center">Password</label>
-                <input class=@_validationPassword type="password" @oninput="CheckPassword" placeholder="Password" />
+                <input class=@_validationPassword type="password" @oninput="CheckPassword" placeholder="Password"/>
             </div>
             @if (!string.IsNullOrEmpty(_errorLabel))
             {
-                    <div class="field">
-                        <label style="color: red">
+                <div class="field">
+                    <label style="color: red">
                         @_errorLabel
-                        </label>
-                    </div>
+                    </label>
+                </div>
             }
             <div class="field">
                 <button class="loginbtn" style="background-color: rgb(@_redRgb,@_greenRgb,000); @_glow" @onclick="LoginAsync">Log in</button>
@@ -41,26 +41,29 @@
 </AuthorizeView>
 
 @code {
-    private string _username;
-    private string _password;
-    private string _errorLabel;
+#pragma warning disable CS0649
+    private string _username = null!;
+    private string _password = null!;
+
+    private string _errorLabel = null!;
     private string _validationUsername;
     private string _validationPassword;
     
-        private const int MinUsernameCharacters = 4; //Disse to domainer brude også være på serverside, ser om jeg når
-        private const int MinPasswordCharacters = 6;
+    private const int MinUsernameCharacters = 4; //Disse to domainer brude også være på serverside, ser om jeg når
+    private const int MinPasswordCharacters = 6;
     
     private int _minUserCharReach;
     private int _minPassCharReach;
+#pragma warning restore CS0649
         private const int RgbTotal = 255;
     
     private int _redRgb;
     private int _greenRgb;
-    private string _glow;
+    private string _glow = null!;
     
-        private const string Invalid = "invalid"; //Kan nok godt gøre det her smartere... men burde nok gå videre
-        private const string Valid = "valid";
-    private bool fillsMinimumReq;
+    private const string Invalid = "invalid"; //Kan nok godt gøre det her smartere... men burde nok gå videre
+    private const string Valid = "valid";
+    private bool _fillsMinimumReq;
     
     public Login() //Spørgsmål til underviser: Er det normalt at lave constructer i page?
     {
@@ -68,7 +71,7 @@
         _validationPassword = Invalid;
         _redRgb = RgbTotal;
         _greenRgb = 0;
-        fillsMinimumReq = false;
+        _fillsMinimumReq = false;
     }
     private void CheckUsername(ChangeEventArgs e)
     {
@@ -80,7 +83,7 @@
     }
     private void Check(ChangeEventArgs e, int minLengthRequirement, string reachChecker, string fieldToSet, string tagValidator)
     {
-        string typedByUser = e!.Value!.ToString()!;
+        string typedByUser = e.Value!.ToString()!;
         System.Diagnostics.Debug.WriteLine(typedByUser);
         int typedLength = typedByUser.Length;
         if(typedLength >= minLengthRequirement)
@@ -105,11 +108,11 @@
         if (_greenRgb == RgbTotal)
         {
             _glow = "box-shadow: 0 0 25px 4px 	#afffaf, 0 0 10px 5px 	#afff5f,0 0 25px 5px #afff00;"; //Dundet glow online, sidder og lejet med... ret sjov glow :)
-            fillsMinimumReq = true;
+            _fillsMinimumReq = true;
         }else
         {
             _glow = "";
-            fillsMinimumReq = false;
+            _fillsMinimumReq = false;
         }
     }   
     
@@ -119,15 +122,15 @@
         _errorLabel = "";
         try
         {
-            if (!fillsMinimumReq)
+            if (!_fillsMinimumReq)
                 throw new Exception("Username and Password has to be right length");
             //await authService.LoginAsync(_username, _password);
-            await authService.LoginAsync(new UserLoginDTO()
+            await AuthService.LoginAsync(new UserLoginDTO()
             {
                 Username = _username,
                 Password = _password
             });
-            navMgr.NavigateTo("/");
+            NavMgr.NavigateTo("/");
         }
         catch (Exception e)
         {
@@ -138,6 +141,6 @@
 
     private void SignUp()
     {
-        navMgr.NavigateTo("/SignUp");
+        NavMgr.NavigateTo("/SignUp");
     }
 }

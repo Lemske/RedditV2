@@ -4,8 +4,7 @@
     width: 250px;
     padding: 25px;
     text-align: center;
-    margin: auto;
-    margin-top: 50px;
+    margin: 50px auto auto;
 }
 
 .field {
@@ -36,9 +35,7 @@ input:focus {
 
 .loginbtn {
     border-radius: 5px;
-    padding: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 5px 10px;
 }
 
 .loginbtn:hover {

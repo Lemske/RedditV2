@@ -31,7 +31,7 @@ public class PostLogic : IPostLogic
     public async Task<IEnumerable<PostOverviewDTO>> GetPostOverviewAsync(SearchPostOverviewParametersDTO searchOverviewParameters)
     {
         var posts = await _postDao.GetPostsAsync(searchOverviewParameters);
-        return posts.Select(post => new PostOverviewDTO(post.Id, post.Title)).ToList();
+        return posts.Select(post => new PostOverviewDTO(post.Id, post.Title, post.Owner.Username)).ToList();
     }
 
     public async Task<PostDTO> GetPostAsync(int id)

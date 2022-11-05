@@ -6,14 +6,17 @@
 
 <PageTitle>Posts</PageTitle>
 <h1>All Posts</h1>
-@if (_postOverviewDTOs != null)
+
+@* ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract *@
+@if(_postOverviewDTOs != null)
 {
     <AuthorizeView>
         <NotAuthorized>
             @foreach (var postOverview in _postOverviewDTOs)
             {
                 <div class="card">
-                    <h3>@postOverview.Title</h3>
+                    <h4>@postOverview.Username</h4>
+                    <h2>@postOverview.Title</h2>
                 </div>
             }
         </NotAuthorized>
@@ -21,7 +24,8 @@
             @foreach (var postOverview in _postOverviewDTOs)
             {
                 <div class="card" @onclick="@(()=>GoToPost(postOverview.Id))">
-                    <h3>@postOverview.Title</h3>
+                    <h4>@postOverview.Username</h4>
+                    <h2>@postOverview.Title</h2>
                 </div>
             }
         </Authorized>
@@ -30,6 +34,7 @@
 
 @code
 {
+    // ReSharper disable once InconsistentNaming
     private IEnumerable<PostOverviewDTO> _postOverviewDTOs = null!;
 
     protected override async Task OnInitializedAsync()

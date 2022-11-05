@@ -52,23 +52,24 @@
 </AuthorizeView>
 
 @code {
-    private string _username;
-    private string _password;
-    private string _email;
-    private string _name;
+#pragma warning disable CS0649
+    private string _username = null!;
+    private string _password = null!;
+    private string _email = null!;
+    private string _name = null!;
     private int _age;
     
-    private string _errorLabel;
+    private string _errorLabel = null!;
     private string _validationUsername; //
     private string _validationPassword;
     private string _validationEmail;
     private string _validationName;
     private string _validationAge;
-        private const int MinUsernameCharacters = 4; //Disse to domainer brude også være på serverside, ser om jeg når
-        private const int MinPasswordCharacters = 6;
-        private const int MinEmailCharacters = 3; //Burde tjekke om @ og om noget er før efter og nok også .com/.dk bla bla
-        private const int MinNameCharacters = 1;
-        private const int MinAgeValue = 18; 
+    private const int MinUsernameCharacters = 4; //Disse to domainer brude også være på serverside, ser om jeg når
+    private const int MinPasswordCharacters = 6;
+    private const int MinEmailCharacters = 3; //Burde tjekke om @ og om noget er før efter og nok også .com/.dk bla bla
+    private const int MinNameCharacters = 1;
+    private const int MinAgeValue = 18; 
     private int _minUserCharReach; //Kan nok også gøres smartere, ser om jeg når til det
     private int _minPassCharReach;
     private int _minEmailCharReach;
@@ -78,11 +79,12 @@
         private const int RgbTotal = 255;
     private int _redRgb;
     private int _greenRgb;
-    private string _glow;
-        private const string Invalid = "invalid"; //
-        private const string Valid = "valid";
-    private bool fillsMinimumReq;
-    
+    private string _glow = null!;
+    private const string Invalid = "invalid"; 
+    private const string Valid = "valid";
+    private bool _fillsMinimumReq;
+#pragma warning restore CS0649
+
     public SignUp() //Spørgsmål til underviser: Er det normalt at lave constructer i page?
     {
         _validationUsername = Invalid;
@@ -93,7 +95,7 @@
         
         _redRgb = RgbTotal;
         _greenRgb = 0;
-        fillsMinimumReq = false;
+        _fillsMinimumReq = false;
     }
     
     private void CheckUsername(ChangeEventArgs e)
@@ -142,7 +144,7 @@
     
     private void Check(ChangeEventArgs e, int minLengthRequirement, string reachChecker, string fieldToSet, string tagValidator)
     {
-        var typedByUser = e!.Value!.ToString()!;
+        var typedByUser = e.Value!.ToString()!;
         System.Diagnostics.Debug.WriteLine(typedByUser);
         var typedLength = typedByUser.Length;
         if(typedLength >= minLengthRequirement)
@@ -167,11 +169,11 @@
         if (_greenRgb == RgbTotal)
         {
             _glow = "box-shadow: 0 0 25px 4px 	#afffaf, 0 0 10px 5px 	#afff5f,0 0 25px 5px #afff00;"; //Dundet glow online, sidder og lejet med... ret sjov glow :)
-            fillsMinimumReq = true;
+            _fillsMinimumReq = true;
         }else
         {
             _glow = "";
-            fillsMinimumReq = false;
+            _fillsMinimumReq = false;
         }
     }   
     
@@ -180,7 +182,7 @@
         _errorLabel = "";
         try
         {
-            if (!fillsMinimumReq)
+            if (!_fillsMinimumReq)
                 throw new Exception("All fields has to be done");
             //await AuthService.RegisterAsync(_username, _password, _email, _name, _age);
             await AuthService.RegisterAsync(new UserRegisterDTO()

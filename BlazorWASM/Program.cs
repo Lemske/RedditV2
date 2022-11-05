@@ -12,7 +12,7 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(
-    sp =>
+    _ =>
         new HttpClient
         {
             BaseAddress = new Uri("https://localhost:7073")

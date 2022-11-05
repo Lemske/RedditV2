@@ -8,14 +8,14 @@
 
 <AuthorizeView>
     <div class="card">
-        <h3>@context.User.Identity.Name, Enter Information</h3>
+        <h3>@context.User.Identity?.Name, Enter Information</h3>
         <div class="field">
             <label>Title</label>
-            <input  type="text" @bind="_title" placeholder="Username"/>
+            <input  type="text" @bind="_title" placeholder="Title"/>
         </div>
         <div class="field">
             <label>Topic</label>
-            <textarea type="text" @bind="_topic" placeholder="Username"></textarea>
+            <textarea type="text" @bind="_topic" placeholder="Topic"></textarea>
         </div>
         @if (!string.IsNullOrEmpty(_errorLabel))
         {
@@ -35,10 +35,12 @@
     [CascadingParameter]
     public Task<AuthenticationState> AuthState { get; set; } = null!;
     
+#pragma warning disable CS8618
     private string _title;
     private string _topic;
     private string _errorLabel;
     private string _username;
+#pragma warning restore CS8618
     
     protected override async Task OnInitializedAsync()
     {
