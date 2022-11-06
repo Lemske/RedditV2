@@ -37,7 +37,6 @@ namespace HttpClients.Services;
         Jwt = token;
 
         ClaimsPrincipal principal = CreateClaimsPrincipal();
-
         OnAuthStateChanged.Invoke(principal);
     }
 

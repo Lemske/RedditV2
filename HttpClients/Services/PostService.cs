@@ -23,7 +23,7 @@ public class PostService : IPostService
         string postAsJson = JsonSerializer.Serialize(dto);
         
         StringContent content = new(postAsJson, Encoding.UTF8, "application/json");
-        HttpResponseMessage response = await _client.PostAsJsonAsync("/Post/create", content);
+        HttpResponseMessage response = await _client.PostAsync("/Post/create", content);
         string responceContent = await response.Content.ReadAsStringAsync();
         
         if (!response.IsSuccessStatusCode)
