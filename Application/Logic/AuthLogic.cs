@@ -45,16 +45,13 @@ public class AuthLogic : IAuthLogic
         if (userRegisterDto.Age < AgeSizeCondition)
             throw new ValidationException($"Age can't be under {AgeSizeCondition}");
         
-        await _authDao.CreateUserAsync(new User()
-        {
-            Username = userRegisterDto.Username,
-            Password = userRegisterDto.Password,
-            Email = userRegisterDto.Email,
-            Name = userRegisterDto.Name,
-            Age = userRegisterDto.Age,
-            Domain = "Reddit",
-            Role = "Wizard",
-            SecurityLevel = 1
-        });
+        await _authDao.CreateUserAsync(new User(userRegisterDto.Username,
+            userRegisterDto.Password,
+            userRegisterDto.Email,
+            "Reddit",
+            userRegisterDto.Name,
+            "Wizard",
+            userRegisterDto.Age,
+            1));
     }
 }

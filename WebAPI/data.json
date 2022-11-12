@@ -43,6 +43,17 @@
       "Role": "Wizard",
       "Age": 18,
       "SecurityLevel": 1
+    },
+    {
+      "Id": 0,
+      "Username": "dsadsad",
+      "Password": "string",
+      "Email": "string",
+      "Domain": "Reddit",
+      "Name": "string",
+      "Role": "Wizard",
+      "Age": 20,
+      "SecurityLevel": 1
     }
   ],
   "Posts": [

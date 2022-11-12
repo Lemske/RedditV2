@@ -36,28 +36,9 @@ public class FileContext
             {
                 Users = new List<User>
                 {
-                    new User
-                    {
-                        Age = 36,
-                        Email = "trmo@via.dk",
-                        Domain = "via",
-                        Name = "Troels Mortensen",
-                        Password = "onetwo3FOUR",
-                        Role = "Teacher",
-                        Username = "trmo",
-                        SecurityLevel = 4
-                    },
-                    new User
-                    {
-                        Age = 34,
-                        Email = "jakob@gmail.com",
-                        Domain = "gmail",
-                        Name = "Jakob Rasmussen",
-                        Password = "password",
-                        Role = "Student",
-                        Username = "jknr",
-                        SecurityLevel = 2
-                    }
+                    new User("trmo", "onetwo3FOUR","trmo@via.dk", "via", "Troels Mortensen", "Teacher", 36, 4)
+                    ,
+                    new User("jknr", "gmail", "jakob@gmail.com", "gmail","Jakob Rasmussen", "Student",34, 2)
                 },
                 Posts = new List<Post>()
             };

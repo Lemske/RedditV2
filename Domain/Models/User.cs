@@ -11,4 +11,16 @@ public class User
     public string Role { get; set; }
     public int Age { get; set; }
     public int SecurityLevel { get; set; }
+    
+    public User(string username, string password, string email, string domain, string name, string role, int age, int securityLevel)
+    {
+        Username = username;
+        Password = password;
+        Email = email;
+        Domain = domain;
+        Name = name;
+        Role = role;
+        Age = age;
+        SecurityLevel = securityLevel;
+    }
 }
