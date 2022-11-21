@@ -1,10 +1,10 @@
-﻿using Domain.Models;
-using FileData.DAOInterfaces;
+﻿using DataAccessLayer.DAOInterfaces;
+using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Shared.DTOs;
 // ReSharper disable InconsistentNaming
 
-namespace FileData.DAOs;
+namespace DataAccessLayer.DAOs;
 
 public class PostDAO : IPostDAO
 {

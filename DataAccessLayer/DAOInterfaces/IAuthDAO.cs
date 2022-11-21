@@ -1,6 +1,6 @@
 ﻿using Domain.Models;
 
-namespace FileData.DAOInterfaces;
+namespace DataAccessLayer.DAOInterfaces;
 
 // ReSharper disable once InconsistentNaming
 public interface IAuthDAO

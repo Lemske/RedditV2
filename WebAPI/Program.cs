@@ -1,13 +1,12 @@
 using System.Text;
 using Application.Logic;
 using Application.LogicInterfaces;
-using FileData;
-using FileData.DAOInterfaces;
-using FileData.DAOs;
+using DataAccessLayer;
+using DataAccessLayer.DAOInterfaces;
+using DataAccessLayer.DAOs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Shared.Auth;
-using Shared.DTOs;
 using WebAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,7 +21,7 @@ builder.Services.AddSwaggerGen();
 //builder.Services.AddScoped<FileContext>();
 builder.Services.AddDbContext<RedditContext>();
 
-builder.Services.AddScoped<IAuthDAO, UserFileDAO>();
+builder.Services.AddScoped<IAuthDAO, UserDAO>();
 builder.Services.AddScoped<IAuthLogic, AuthLogic>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 

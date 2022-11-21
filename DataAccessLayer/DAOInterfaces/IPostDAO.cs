@@ -2,7 +2,7 @@
 using Shared.DTOs;
 // ReSharper disable InconsistentNaming
 
-namespace FileData.DAOInterfaces;
+namespace DataAccessLayer.DAOInterfaces;
 
 public interface IPostDAO
 {

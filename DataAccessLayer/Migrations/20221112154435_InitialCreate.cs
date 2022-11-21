@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace FileData.Migrations
+namespace DataAccessLayer.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

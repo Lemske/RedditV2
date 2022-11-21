@@ -1,7 +1,7 @@
 ﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace FileData;
+namespace DataAccessLayer;
 
 public class RedditContext : DbContext
 {
@@ -10,7 +10,7 @@ public class RedditContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source = ../FileData/Reddit.db");
+        optionsBuilder.UseSqlite("Data Source = ../DataAccessLayer/Reddit.db");
     }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)

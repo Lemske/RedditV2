@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using Domain.Models;
 
-namespace FileData;
+namespace DataAccessLayer;
 
 public class FileContext
 {

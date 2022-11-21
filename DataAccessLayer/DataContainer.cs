@@ -1,6 +1,6 @@
 ﻿using Domain.Models;
 
-namespace FileData;
+namespace DataAccessLayer;
 
 public class DataContainer
 {

@@ -1,14 +1,15 @@
-﻿using Domain.Models;
-using FileData.DAOInterfaces;
+﻿using DataAccessLayer.DAOInterfaces;
+using Domain.Models;
+
 // ReSharper disable InconsistentNaming
 
-namespace FileData.DAOs;
+namespace DataAccessLayer.DAOs;
 
-public class UserFileDAO : IAuthDAO
+public class UserDAO : IAuthDAO
 {
     private readonly RedditContext _context;
 
-    public UserFileDAO(RedditContext context)
+    public UserDAO(RedditContext context)
     {
         _context = context;
     }

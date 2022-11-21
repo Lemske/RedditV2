@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Application.LogicInterfaces;
 using Domain.Models;
-using FileData.DAOInterfaces;
+using DataAccessLayer.DAOInterfaces;
 using Shared.DTOs;
 
 namespace Application.Logic;
