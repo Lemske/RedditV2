@@ -17,7 +17,7 @@ public class PostDAO : IPostDAO
 
     public Task<Post> CreatePostAsync(Post post)
     {
-        _context.Posts!.Add(post);
+        _context.Posts.Add(post);
         _context.SaveChanges();
 
         return Task.FromResult(post);

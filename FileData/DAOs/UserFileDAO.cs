@@ -15,14 +15,14 @@ public class UserFileDAO : IAuthDAO
 
     public Task<User?> GetByUsernameAsync(string username)
     {
-        return Task.FromResult(_context.Users!.FirstOrDefault(u =>
+        return Task.FromResult(_context.Users.FirstOrDefault(u =>
             u.Username.ToLower().Equals(username.ToLower())
         ));
     }
 
     public Task CreateUserAsync(User newUser)
     {
-        _context.Users!.Add(newUser);
+        _context.Users.Add(newUser);
         _context.SaveChanges();
         
         return Task.CompletedTask;
