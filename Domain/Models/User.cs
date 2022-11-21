@@ -23,4 +23,8 @@ public class User
         Age = age;
         SecurityLevel = securityLevel;
     }
+
+    private User()
+    {
+    }
 }

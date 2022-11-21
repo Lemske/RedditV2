@@ -6,9 +6,9 @@ namespace FileData.DAOs;
 
 public class UserFileDAO : IAuthDAO
 {
-    private readonly FileContext _context;
+    private readonly RedditContext _context;
 
-    public UserFileDAO(FileContext context)
+    public UserFileDAO(RedditContext context)
     {
         _context = context;
     }
@@ -16,7 +16,7 @@ public class UserFileDAO : IAuthDAO
     public Task<User?> GetByUsernameAsync(string username)
     {
         return Task.FromResult(_context.Users!.FirstOrDefault(u =>
-            u.Username.Equals(username, StringComparison.OrdinalIgnoreCase)
+            u.Username.ToLower().Equals(username.ToLower())
         ));
     }
 

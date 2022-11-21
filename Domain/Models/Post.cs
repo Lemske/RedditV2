@@ -3,12 +3,12 @@
 public class Post
 {
     public int Id { get; set; }
-    public User Owner { get; }
-    public string Title { get; }
+    public User Owner { get; private set; }
+    public string Title { get; private set; }
     
     public string Topic { get; set;}
     
-    public ICollection<Comment> Comments { get; set;}
+    //public ICollection<Comment> Comments { get; set;}
 
 
     public Post(User owner, string title, string topic)
@@ -16,5 +16,9 @@ public class Post
         Owner = owner;
         Title = title;
         Topic = topic;
+    }
+
+    private Post()
+    {
     }
 }

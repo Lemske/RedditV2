@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using FileData.DAOInterfaces;
+using Microsoft.EntityFrameworkCore;
 using Shared.DTOs;
 // ReSharper disable InconsistentNaming
 
@@ -7,24 +8,15 @@ namespace FileData.DAOs;
 
 public class PostDAO : IPostDAO
 {
-    private readonly FileContext _context;
+    private readonly RedditContext _context;
 
-    public PostDAO(FileContext context)
+    public PostDAO(RedditContext context)
     {
         _context = context;
     }
 
     public Task<Post> CreatePostAsync(Post post)
     {
-        int id = 1;
-        if (_context.Posts!.Any())
-        {
-            id = _context.Posts!.Max(t => t.Id);
-            id++;
-        }
-
-        post.Id = id;
-
         _context.Posts!.Add(post);
         _context.SaveChanges();
 
@@ -33,7 +25,7 @@ public class PostDAO : IPostDAO
 
     public Task<IEnumerable<Post>> GetPostsAsync(SearchPostOverviewParametersDTO searchOverviewParameters)
     {
-        IEnumerable<Post> result = _context.Posts!.AsEnumerable();
+        IEnumerable<Post> result = _context.Posts.Include(post => post.Owner).AsQueryable();
         return Task.FromResult(result);
     }
 
@@ -44,8 +36,7 @@ public class PostDAO : IPostDAO
 
     public Task<Post?> GetPostByIdAsync(int postId)
     {
-        IEnumerable<Post> result = _context.Posts!.AsEnumerable();
-        return Task.FromResult(result.First(p => p.Id == postId))!;
+        return Task.FromResult(_context.Posts.Include(post => post.Owner).FirstOrDefault(p => p.Id == postId));
     }
 
     public Task DeleteAsync(int id)
